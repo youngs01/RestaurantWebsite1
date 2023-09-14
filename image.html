@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="magnific-popup/magnific-popup.css">
+    <style>
+        /* Styles for the lightbox overlay */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        /* Styles for the lightbox image */
+        .lightbox-image {
+            max-width: 80%;
+            max-height: 80%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Styles for the close button */
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+        }
+
+        /* Styles for left and right arrow buttons */
+        .lightbox-prev,
+        .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+            z-index: 1001; /* Ensure arrow buttons are above the image */
+        }
+
+        .lightbox-prev {
+            left: 10px;
+        }
+
+        .lightbox-next {
+            right: 10px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+
+<div class="gallery">
+    <a href="grid-coffe.webp" class="lightbox-trigger">Open image 1 (gallery #1)</a><br>
+    <a href="grid-desert.webp" class="lightbox-trigger">Open image 2 (gallery #1)</a><br>
+</div>
+<div class="gallery">
+    <a href="grid-fries.webp" class="lightbox-trigger">Open image 1 (gallery #2)</a><br>
+    <a href="gride-glass.webp" class="lightbox-trigger">Open image 2 (gallery #2)</a><br>
+    <a href="http://vimeo.com/123123" class="mfp-iframe">Open video (gallery #2). Class mfp-iframe forces "iframe" content type on this item.</a>
+</div>
+
+<!-- Lightbox overlay -->
+<div class="lightbox-overlay">
+    <img src="" alt="Lightbox Image" class="lightbox-image">
+    <div class="lightbox-close">×</div>
+    <div class="lightbox-prev">&#9664;</div>
+    <div class="lightbox-next">&#9654;</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="magnific-popup/jquery.magnific-popup.js"></script>
+<script>
+    $(document).ready(function() {
+        const $lightboxOverlay = $('.lightbox-overlay');
+        const $lightboxImage = $('.lightbox-image');
+        const $lightboxClose = $('.lightbox-close');
+        const $lightboxPrev = $('.lightbox-prev');
+        const $lightboxNext = $('.lightbox-next');
+
+        // Store the links for each gallery
+        const galleryLinks = $('.gallery .lightbox-trigger');
+        let currentIndex = 0;
+
+        // Handle click events on lightbox-trigger links
+        galleryLinks.on('click', function(e) {
+            e.preventDefault();
+            const imageUrl = $(this).attr('href');
+
+            // Display the lightbox overlay and set the image source
+            $lightboxOverlay.show();
+            $lightboxImage.attr('src', imageUrl);
+
+            // Update the current index to the clicked image
+            currentIndex = galleryLinks.index(this);
+        });
+
+        // Close the lightbox when clicking the close button
+        $lightboxClose.on('click', function() {
+            $lightboxOverlay.hide();
+            $lightboxImage.attr('src', ''); // Clear the image source
+        });
+
+        // Handle navigation to the previous image
+        $lightboxPrev.on('click', function() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                const imageUrl = galleryLinks.eq(currentIndex).attr('href');
+                $lightboxImage.attr('src', imageUrl);
+            }
+        });
+
+        // Handle navigation to the next image
+        $lightboxNext.on('click', function() {
+            if (currentIndex < galleryLinks.length - 1) {
+                currentIndex++;
+                const imageUrl = galleryLinks.eq(currentIndex).attr('href');
+                $lightboxImage.attr('src', imageUrl);
+            }
+        });
+    });
+</script>
+</body>
+</html>
